@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Checkout · Everyday Store</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="{{ url_for('home') }}"><span class="brand-mark">e</span> everyday<span class="brand-light">store</span></a><nav><a href="{{ url_for('view_cart') }}">Back to cart</a></nav></header>
+  <main class="page-wrap checkout-wrap">
+    <p class="eyebrow">Almost yours</p><h1 class="page-title">Checkout summary</h1>
+    {% if lines %}
+    <div class="checkout-card">
+      <div class="checkout-items">
+        {% for item in lines %}
+        <div class="summary-line"><span>{{ item.emoji }} &nbsp; {{ item.name }} × {{ item.quantity }}</span><strong>₹{{ "%.2f"|format(item.line_total) }}</strong></div>
+        {% endfor %}
+      </div>
+      <div class="summary-line"><span>Subtotal</span><strong>₹{{ "%.2f"|format(subtotal) }}</strong></div>
+      <div class="summary-line"><span>Shipping</span><strong>{% if shipping == 0 %}Free{% else %}₹{{ "%.2f"|format(shipping) }}{% endif %}</strong></div>
+      <p class="shipping-note">{% if subtotal < 3000 %}Add ₹{{ "%.2f"|format(3000 - subtotal) }} more for free shipping.{% else %}Your order qualifies for free shipping.{% endif %}</p>
+      <div class="grand-total"><span>Total</span><strong>₹{{ "%.2f"|format(total) }}</strong></div>
+      <p class="demo-note">This starter project shows a checkout summary only. It does not collect payment or personal address details.</p>
+      <a class="button dark full" href="{{ url_for('home') }}">Continue shopping</a>
+    </div>
+    {% else %}
+    <section class="empty-state"><h2>Nothing to check out yet</h2><p>Add a product to your cart first.</p><a class="button dark" href="{{ url_for('home') }}">Browse the shop</a></section>
+    {% endif %}
+  </main>
+  <footer class="site-footer"><span>everyday store</span><span>Checkout demo</span></footer>
+</body>
+</html>

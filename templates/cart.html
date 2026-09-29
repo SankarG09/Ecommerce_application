@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Your Cart · Everyday Store</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="{{ url_for('home') }}"><span class="brand-mark">e</span> everyday<span class="brand-light">store</span></a><nav><a href="{{ url_for('home') }}">Continue shopping</a></nav></header>
+  <main class="page-wrap">
+    <p class="eyebrow">Your selection</p><h1 class="page-title">Shopping cart</h1>
+    {% if lines %}
+    <div class="cart-layout">
+      <section class="cart-items">
+        {% for item in lines %}
+        <article class="cart-item">
+          <div class="cart-emoji">{{ item.emoji }}</div>
+          <div class="cart-description"><h2>{{ item.name }}</h2><p>₹{{ "%.2f"|format(item.price) }} each</p></div>
+          <form class="quantity-form" method="post" action="{{ url_for('update_cart', product_id=item.id) }}">
+            <label for="quantity-{{ item.id }}">Qty</label><input id="quantity-{{ item.id }}" name="quantity" type="number" min="0" max="99" value="{{ item.quantity }}"><button type="submit">Update</button>
+          </form>
+          <strong class="line-price">₹{{ "%.2f"|format(item.line_total) }}</strong>
+          <form method="post" action="{{ url_for('remove_from_cart', product_id=item.id) }}"><button class="text-button" type="submit">Remove</button></form>
+        </article>
+        {% endfor %}
+        <form method="post" action="{{ url_for('clear_cart') }}"><button class="text-button" type="submit">Clear cart</button></form>
+      </section>
+      <aside class="summary">
+        <h2>Order summary</h2><div class="summary-line"><span>Subtotal</span><strong>₹{{ "%.2f"|format(subtotal) }}</strong></div>
+        <p class="shipping-note">Shipping is calculated at checkout.</p>
+        <a class="button dark full" href="{{ url_for('checkout') }}">Continue to checkout</a>
+      </aside>
+    </div>
+    {% else %}
+    <section class="empty-state"><div class="empty-icon">🛍️</div><h2>Your cart is empty</h2><p>Find something useful for your everyday.</p><a class="button dark" href="{{ url_for('home') }}">Browse the shop</a></section>
+    {% endif %}
+  </main>
+  <footer class="site-footer"><span>everyday store</span><span>Secure checkout demo</span></footer>
+</body>
+</html>

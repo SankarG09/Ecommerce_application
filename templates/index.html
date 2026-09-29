@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Everyday Store</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="{{ url_for('home') }}"><span class="brand-mark">e</span> everyday<span class="brand-light">store</span></a>
+    <nav><a href="{{ url_for('home') }}">Shop</a><a class="cart-link" href="{{ url_for('view_cart') }}">Cart <span>{{ cart_count }}</span></a></nav>
+  </header>
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">Thoughtful finds, everyday prices</p>
+        <h1>Good things for<br>your everyday.</h1>
+        <p>Useful, well-designed essentials picked to make your day a little better.</p>
+        <a class="button dark" href="#products">Explore products</a>
+      </div>
+      <div class="hero-art" aria-hidden="true"><div class="sun"></div><span>✦</span><div class="art-card">YOUR<br>EVERYDAY<br><b>EDIT</b></div></div>
+    </section>
+
+    <section id="products" class="products-section">
+      <div class="section-heading"><div><p class="eyebrow">The collection</p><h2>Popular picks</h2></div><p>Simple essentials. Ready for your routine.</p></div>
+      <div class="product-grid">
+        {% for product_id, product in products.items() %}
+        <article class="product-card">
+          <div class="product-art art-{{ loop.index }}"><span>{{ product.emoji }}</span><small>{{ product.category }}</small></div>
+          <div class="product-info">
+            <div><h3>{{ product.name }}</h3><p>{{ product.description }}</p></div>
+            <div class="product-buy"><strong>₹{{ "%.2f"|format(product.price) }}</strong>
+              <form method="post" action="{{ url_for('add_to_cart', product_id=product_id) }}"><button class="add-button" type="submit" aria-label="Add {{ product.name }} to cart">+</button></form>
+            </div>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer"><span>everyday store</span><span>A sample Flask shop project</span></footer>
+</body>
+</html>
