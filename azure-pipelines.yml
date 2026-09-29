@@ -10,7 +10,7 @@ steps:
   - checkout: self
   - task: SonarCloudPrepare@4
     inputs:
-      SonarCloud: "SonarCloudServiceConnection"
+      SonarCloud: "ecommerceapplication"
       organization: "sankarg09"
       scannerMode: "cli"
       configMode: "manual"
